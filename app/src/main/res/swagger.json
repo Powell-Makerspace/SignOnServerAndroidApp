@@ -1,0 +1,254 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "Application designed to track and analyze visit and member information.",
+    "version": "1.0",
+    "title": "Powell Makerspace Login Application API",
+    "contact": {
+      "name": "Anthony Riesen",
+      "email": "r.anthony1961@hotmail.com"
+    },
+    "license": {
+      "name": "License to be Determined",
+      "url": "License to be Determined"
+    }
+  },
+  "host": "localhost:8080",
+  "basePath": "/",
+  "tags": [
+    {
+      "name": "member-controller",
+      "description": "Provides functionality for updating and retrieving member objects."
+    }
+  ],
+  "paths": {
+    "/members": {
+      "get": {
+        "tags": [
+          "member-controller"
+        ],
+        "summary": "getMembers",
+        "description": "Retrieves all members given the provided filters",
+        "operationId": "getMembersUsingGET",
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "name": "memberName",
+            "in": "query",
+            "description": "Full or partial member name to filter search",
+            "required": false,
+            "type": "string",
+            "allowEmptyValue": false
+          },
+          {
+            "name": "membershipType",
+            "in": "query",
+            "description": "Membership Type to filter search (enum)",
+            "required": false,
+            "type": "string",
+            "allowEmptyValue": false,
+            "enum": [
+              "INDIVIDUAL",
+              "FAMILY",
+              "LIBRARY_PASS",
+              "PUNCH_PASS",
+              "NORTHWEST_COLLEGE",
+              "NONMEMBER",
+              "VISTA"
+            ]
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Iterable«Member»"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "deprecated": false
+      },
+      "put": {
+        "tags": [
+          "member-controller"
+        ],
+        "summary": "createMember",
+        "description": "Add new member to the repository",
+        "operationId": "createMemberUsingPUT",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "member",
+            "description": "member object to be created",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/Member"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "201": {
+            "description": "Created"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/members/{id}": {
+      "get": {
+        "tags": [
+          "member-controller"
+        ],
+        "summary": "getMember",
+        "description": "Retrieves a member matching the provided memberId",
+        "operationId": "getMemberUsingGET",
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "long memberId",
+            "required": false,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Member"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "deprecated": false
+      },
+      "post": {
+        "tags": [
+          "member-controller"
+        ],
+        "summary": "updateMember",
+        "description": "Update a given member in the repository",
+        "operationId": "updateMemberUsingPOST",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "memberId of the member to be updated",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "in": "body",
+            "name": "member",
+            "description": "member object to be updated",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Member"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "201": {
+            "description": "Created"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "deprecated": false
+      }
+    }
+  },
+  "definitions": {
+    "Iterable«Member»": {
+      "type": "object",
+      "title": "Iterable«Member»"
+    },
+    "Member": {
+      "type": "object",
+      "properties": {
+        "memberId": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "memberName": {
+          "type": "string"
+        },
+        "membershipType": {
+          "type": "string",
+          "enum": [
+            "INDIVIDUAL",
+            "FAMILY",
+            "LIBRARY_PASS",
+            "PUNCH_PASS",
+            "NORTHWEST_COLLEGE",
+            "NONMEMBER",
+            "VISTA"
+          ]
+        },
+        "punchPasses": {
+          "type": "integer",
+          "format": "int32"
+        }
+      },
+      "title": "Member"
+    }
+  }
+}
